@@ -1,0 +1,13 @@
+{
+  "name": "stableflow",
+  "private": true,
+  "description": "Horse and stable operations management system",
+  "workspaces": ["client", "server"],
+  "scripts": {
+    "dev": "concurrently \"npm run dev --workspace server\" \"npm run dev --workspace client\"",
+    "build": "npm run build --workspace client",
+    "test": "node --test",
+    "start": "npm run start --workspace server"
+  },
+  "devDependencies": { "concurrently": "^9.2.1" }
+}

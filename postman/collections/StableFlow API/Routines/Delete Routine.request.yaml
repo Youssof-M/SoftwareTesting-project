@@ -1,0 +1,8 @@
+$kind: http-request
+name: Delete Routine
+method: DELETE
+url: '{{base_url}}/routines/{{routine_id}}'
+order: 4000
+pathVariables:
+  - key: id
+    value: '{{routine_id}}'

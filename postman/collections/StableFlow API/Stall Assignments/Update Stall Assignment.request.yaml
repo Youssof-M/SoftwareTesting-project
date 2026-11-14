@@ -1,0 +1,17 @@
+$kind: http-request
+name: Update Stall Assignment
+method: PUT
+url: '{{base_url}}/stallAssignments/{{assignment_id}}'
+order: 3000
+pathVariables:
+  - key: id
+    value: '{{assignment_id}}'
+headers:
+  - key: Content-Type
+    value: application/json
+body:
+  type: json
+  content: |-
+    {
+      "endDate": "2027-01-31"
+    }

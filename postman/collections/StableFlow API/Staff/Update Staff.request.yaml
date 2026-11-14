@@ -1,0 +1,19 @@
+$kind: http-request
+name: Update Staff
+method: PUT
+url: '{{base_url}}/staff/{{staff_id}}'
+order: 3000
+pathVariables:
+  - key: id
+    value: '{{staff_id}}'
+headers:
+  - key: Content-Type
+    value: application/json
+body:
+  type: json
+  content: |-
+    {
+      "name": "Alex Johnson",
+      "role": "Trainer",
+      "email": "alex@example.com"
+    }

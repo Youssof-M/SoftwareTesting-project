@@ -1,0 +1,29 @@
+$kind: collection
+name: StableFlow API
+description: API collection for the StableFlow stable management system. Covers authentication, horses, staff, stalls, stall assignments, routines, activities, history, and resources.
+variables:
+  - key: base_url
+    value: 'http://localhost:5000/api'
+  - key: auth_token
+    value: ''
+  - key: horse_id
+    value: ''
+  - key: staff_id
+    value: ''
+  - key: stall_id
+    value: ''
+  - key: assignment_id
+    value: ''
+  - key: routine_id
+    value: ''
+  - key: activity_id
+    value: ''
+  - key: history_id
+    value: ''
+  - key: resource_id
+    value: ''
+auth:
+  type: bearer
+  credentials:
+    - key: token
+      value: '{{auth_token}}'

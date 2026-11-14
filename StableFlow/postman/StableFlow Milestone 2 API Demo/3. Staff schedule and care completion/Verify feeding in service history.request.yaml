@@ -1,0 +1,10 @@
+$kind: http-request
+url: "{{baseUrl}}/history"
+method: GET
+headers:
+  Authorization: Bearer {{managerToken}}
+scripts:
+  - type: afterResponse
+    code: pm.test('Completed routine appears in horse history', () => pm.expect(pm.response.json().some((item) => item.routineId === pm.environment.get('routineId'))).to.be.true);
+    language: text/javascript
+order: 4000

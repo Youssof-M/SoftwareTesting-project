@@ -1,0 +1,28 @@
+$kind: http-request
+name: Create Routine
+method: POST
+url: '{{base_url}}/routines'
+order: 2000
+headers:
+  - key: Content-Type
+    value: application/json
+body:
+  type: json
+  content: |-
+    {
+      "horseId": "{{horse_id}}",
+      "type": "Feeding",
+      "time": "07:00",
+      "frequency": "Daily",
+      "staffId": "{{staff_id}}",
+      "active": true
+    }
+scripts:
+  - type: afterResponse
+    language: text/javascript
+    code: |-
+      const res = pm.response.json();
+      if (res._id) {
+        pm.collectionVariables.set('routine_id', res._id);
+        console.log('✅ routine_id saved:', res._id);
+      }

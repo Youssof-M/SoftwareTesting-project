@@ -1,0 +1,13 @@
+$kind: http-request
+url: "{{baseUrl}}/horses"
+method: GET
+headers:
+  Authorization: Bearer {{managerToken}}
+scripts:
+  - type: afterResponse
+    code: |-
+      const horse = pm.response.json().find((item) => item.horseId === 'SF-DEMO-001');
+      pm.test('Seeded horse exists', () => pm.expect(horse).to.exist);
+      if (horse) pm.environment.set('horseId', horse._id);
+    language: text/javascript
+order: 1000

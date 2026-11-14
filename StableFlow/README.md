@@ -11,13 +11,16 @@ StableFlow is a horse and stable operations beta built with React, Express, Node
 ## Run locally
 
 1. Open a terminal in this folder and run `npm install`.
-2. Copy `.env.example` to `.env`. Set a private random `AUTH_SECRET`; set `MONGODB_URI` to use MongoDB. Without a `MONGODB_URI`, the API uses persistent local JSON files in `server/data` so the beta runs without a separate database service.
-3. Run `npm run dev` to start the API and React client.
-4. Open <http://localhost:5173> and create the first manager account. Managers can add staff profiles with login accounts. The API health endpoint is <http://localhost:5000/api/health>.
+2. Optionally copy `.env.example` to `.env`; set a private random `AUTH_SECRET` and, if using MongoDB, set `MONGODB_URI`. Without a `MONGODB_URI`, the API uses persistent local JSON files in `server/data`.
+3. Optionally run `npm run seed` while the app is stopped to load fictional demo records. On a fresh database it creates a manager and linked staff account, then prints their generated passwords once. Save those credentials; rerunning the seed does not duplicate records or change passwords. If you skip seeding, the app instead guides you through first manager setup.
+4. Run `npm run dev` to start the API and React client.
+5. Open <http://localhost:5173> and sign in with the seed credentials or create the first manager account. The API health endpoint is <http://localhost:5000/api/health>.
 
 For a production client build, run `npm run build`. Start the API with `npm start`.
 
-Run the Milestone 2 requirement checks with `npm test`. They exercise the connected API workflow, role permissions, persistence across restart, horse search, staff schedule behavior, and the 10-second schedule target.
+Run the complete Jest suite from this folder with `npm test`. Jest runs client service tests, server record and file repository tests, seed tests, and the connected API workflow, including role permissions and persistence across restart. Run `npm test -- --watch` to rerun tests as you edit files.
+
+For the evaluator's API walkthrough, import `postman/StableFlow.postman_collection.json` and follow `docs/M2-API-Demo.md`. Suggested individual questions are in `docs/Team-M2-QA-Prep.md`.
 
 ## Beta walkthrough
 

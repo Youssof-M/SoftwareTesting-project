@@ -1,0 +1,19 @@
+$kind: http-request
+name: Update Resource
+method: PUT
+url: '{{base_url}}/resources/{{resource_id}}'
+order: 3000
+pathVariables:
+  - key: id
+    value: '{{resource_id}}'
+headers:
+  - key: Content-Type
+    value: application/json
+body:
+  type: json
+  content: |-
+    {
+      "name": "Saddle",
+      "category": "Equipment",
+      "availability": "In Use"
+    }

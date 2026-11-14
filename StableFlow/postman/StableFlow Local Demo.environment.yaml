@@ -1,0 +1,30 @@
+name: StableFlow Local Demo
+values:
+  - key: baseUrl
+    value: 'http://localhost:5000/api'
+  - key: demoDate
+    value: ''
+  - key: managerEmail
+    value: manager@stableflow.demo
+  - key: managerPassword
+    value: ''
+  - key: staffEmail
+    value: alex@stableflow.demo
+  - key: staffPassword
+    value: ''
+  - key: managerToken
+    value: ''
+  - key: staffToken
+    value: ''
+  - key: horseId
+    value: ''
+  - key: secondHorseId
+    value: ''
+  - key: staffId
+    value: ''
+  - key: stallId
+    value: ''
+  - key: routineId
+    value: ''
+  - key: activityId
+    value: ''

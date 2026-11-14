@@ -1,0 +1,19 @@
+$kind: http-request
+name: Update Stall
+method: PUT
+url: '{{base_url}}/stalls/{{stall_id}}'
+order: 3000
+pathVariables:
+  - key: id
+    value: '{{stall_id}}'
+headers:
+  - key: Content-Type
+    value: application/json
+body:
+  type: json
+  content: |-
+    {
+      "name": "Stall A1",
+      "location": "North Barn",
+      "status": "Occupied"
+    }

@@ -1,0 +1,8 @@
+$kind: http-request
+name: Delete Resource
+method: DELETE
+url: '{{base_url}}/resources/{{resource_id}}'
+order: 4000
+pathVariables:
+  - key: id
+    value: '{{resource_id}}'

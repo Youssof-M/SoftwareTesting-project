@@ -1,0 +1,20 @@
+$kind: http-request
+name: Update Activity
+method: PUT
+url: '{{base_url}}/activities/{{activity_id}}'
+order: 3000
+pathVariables:
+  - key: id
+    value: '{{activity_id}}'
+headers:
+  - key: Content-Type
+    value: application/json
+body:
+  type: json
+  content: |-
+    {
+      "type": "Training",
+      "date": "2026-11-12",
+      "time": "11:00",
+      "durationMinutes": 90
+    }

@@ -1,0 +1,12 @@
+$kind: http-request
+url: "{{baseUrl}}/activities/{{activityId}}/complete"
+method: POST
+headers:
+  Authorization: Bearer {{managerToken}}
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test('Manager can complete the appointment', () => pm.response.to.have.status(200));
+      pm.test('Appointment status is completed', () => pm.expect(pm.response.json().status).to.eql('completed'));
+    language: text/javascript
+order: 3000

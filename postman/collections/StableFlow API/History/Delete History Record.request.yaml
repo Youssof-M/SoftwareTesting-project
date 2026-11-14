@@ -1,0 +1,8 @@
+$kind: http-request
+name: Delete History Record
+method: DELETE
+url: '{{base_url}}/history/{{history_id}}'
+order: 4000
+pathVariables:
+  - key: id
+    value: '{{history_id}}'

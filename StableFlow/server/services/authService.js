@@ -1,4 +1,5 @@
 import bcrypt from 'bcryptjs';
+import { randomBytes } from 'node:crypto';
 import jwt from 'jsonwebtoken';
 import mongoose from 'mongoose';
 import { User } from '../models/User.js';
@@ -61,6 +62,29 @@ export async function login({ email, password }) {
 export async function createStaffAccount(data) {
   const user = await createAccount({ ...data, role: 'staff' });
   return publicUser(user);
+}
+
+export async function ensureDemoAccounts(staffRecord) {
+  const credentials = [];
+  const users = await allUsers();
+  if (!users.some((user) => user.role === 'manager')) {
+    const email = 'manager@stableflow.demo';
+    const password = randomBytes(18).toString('base64url');
+    await createAccount({ name: 'StableFlow Demo Manager', email, password, role: 'manager' });
+    credentials.push({ role: 'manager', email, password });
+  }
+
+  const currentUsers = await allUsers();
+  const linkedStaff = currentUsers.find((user) => user.role === 'staff' && String(user.staffId) === String(staffRecord._id));
+  if (!linkedStaff) {
+    const email = 'alex@stableflow.demo';
+    const existingEmail = await byEmail(email);
+    if (existingEmail) throw invalid(`The seed email ${email} is already used by a different account.`, 409);
+    const password = randomBytes(18).toString('base64url');
+    await createAccount({ name: staffRecord.name, email, password, role: 'staff', staffId: staffRecord._id });
+    credentials.push({ role: 'staff', email, password });
+  }
+  return credentials;
 }
 
 export function verifyToken(token) {

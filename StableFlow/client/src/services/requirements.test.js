@@ -1,7 +1,7 @@
-import test from 'node:test';
 import assert from 'node:assert/strict';
 import { filterHorses } from './horseSearch.js';
 import { buildStaffSchedule } from './staffSchedule.js';
+import { countAvailableStalls, isStallOccupied } from './stallAvailability.js';
 
 test('horse search matches names and stable IDs without case sensitivity', () => {
   const horses = [{ name: 'Clover', horseId: 'SF-17' }, { name: 'Rowan', horseId: 'SF-29' }];
@@ -25,6 +25,14 @@ test('daily staff schedule includes assigned work and omits care already complet
     history: [{ routineId: 'routine-2', date: '2026-11-11' }],
   });
   assert.deepEqual(schedule.map((item) => item._id), ['routine-1', 'appointment-1']);
+});
+
+test('stall availability reflects active date-range assignments', () => {
+  const stalls = [{ _id: 'stall-1', status: 'Available' }, { _id: 'stall-2', status: 'Available' }, { _id: 'stall-3', status: 'Maintenance' }];
+  const assignments = [{ stallId: 'stall-1', startDate: '2026-11-01', endDate: '9999-12-31' }];
+  assert.equal(isStallOccupied('stall-1', assignments, '2026-11-12'), true);
+  assert.equal(isStallOccupied('stall-1', assignments, '2025-11-12'), false);
+  assert.equal(countAvailableStalls(stalls, assignments, '2026-11-12'), 1);
 });
 
 test('schedule calculation stays within the ten-second NFR target on a large local set', () => {

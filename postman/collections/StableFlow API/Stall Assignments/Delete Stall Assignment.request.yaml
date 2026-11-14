@@ -1,0 +1,8 @@
+$kind: http-request
+name: Delete Stall Assignment
+method: DELETE
+url: '{{base_url}}/stallAssignments/{{assignment_id}}'
+order: 4000
+pathVariables:
+  - key: id
+    value: '{{assignment_id}}'

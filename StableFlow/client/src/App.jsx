@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { completeActivity, completeRoutine, createRecord, createStaffAccount, deleteRecord, getStaffDailySchedule, listRecords, login, request, setupManager } from './services/api.js';
 import { filterHorses } from './services/horseSearch.js';
 import { buildStaffSchedule } from './services/staffSchedule.js';
+import { countAvailableStalls, isStallOccupied } from './services/stallAvailability.js';
 
 const kinds = ['horses', 'staff', 'stalls', 'stallAssignments', 'routines', 'activities', 'history', 'resources'];
 const nav = [['Overview', '⌂'], ['Horses', '♞'], ['Feeding & care', '◷'], ['Schedule', '▦'], ['Stalls & resources', '▤'], ['Staff & history', '♙']];
@@ -129,7 +130,7 @@ function App() {
   if (page === 'Overview') {
     content = <>
       <section className="welcome"><p className="eyebrow">STABLE OPERATIONS</p><h2>A calmer day starts here.</h2><p>Keep every horse, task, and team member in sync.</p></section>
-      <div className="stats">{[['Horse profiles', data.horses.length], ['Appointments today', data.activities.filter((a) => a.date === today).length], ['Available stalls', data.stalls.filter((s) => s.status === 'Available').length]].map(([label, value]) => <div className="stat" key={label}><small>{label}</small><strong>{value}</strong></div>)}</div>
+      <div className="stats">{[['Horse profiles', data.horses.length], ['Appointments today', data.activities.filter((a) => a.date === today).length], ['Available stalls', countAvailableStalls(data.stalls, data.stallAssignments, today)]].map(([label, value]) => <div className="stat" key={label}><small>{label}</small><strong>{value}</strong></div>)}</div>
       <div className="content-grid"><Table title="Today's schedule" columns={['Date & time', 'Type', 'Horse', 'Staff', 'Status', '']} rows={activityRows(activities.filter((a) => a.date === today))} />
         <section className="panel focus"><p className="eyebrow">CONNECTED CARE</p><h3>From profile to service history</h3><p>Create a horse profile, assign a stall, schedule care, then record the work in the horse's history.</p><button className="button" onClick={() => setPage('Horses')}>Start with a horse</button></section></div>
     </>;
@@ -153,7 +154,7 @@ function App() {
       { name: 'stallId', label: 'Stall', options: data.stalls.map((x) => [x._id, x.name]), required: true }, { name: 'horseId', label: 'Horse', options: horseOptions, required: true }, { name: 'startDate', label: 'From', type: 'date', required: true }, { name: 'endDate', label: 'Until', type: 'date' },
     ]} /><RecordForm title="Add a stable resource" onSave={(v) => save('resources', v, { availability: 'Available' })} fields={[
       { name: 'name', label: 'Resource name', required: true }, { name: 'category', label: 'Category' }, { name: 'availability', label: 'Availability', options: ['Available', 'Unavailable', 'Maintenance'].map((x) => [x, x]) },
-    ]} /></>}</div><div className="form-stack"><Table title="Stalls" columns={['Stall', 'Location', 'Availability', '']} rows={data.stalls.map((s) => { const occupied = data.stallAssignments.some((a) => a.stallId === s._id && a.startDate <= today && a.endDate >= today); return <tr key={s._id}><td>{s.name}</td><td>{s.location || '—'}</td><td>{occupied ? 'Occupied' : 'Available'}</td><td>{del('stalls', s)}</td></tr>; })} /><Table title="Stall assignments" columns={['Stall', 'Horse', 'From', 'Until', '']} rows={data.stallAssignments.map((a) => <tr key={a._id}><td>{stallNames[a.stallId] || 'Stall'}</td><td>{horseNames[a.horseId] || 'Horse'}</td><td>{a.startDate}</td><td>{a.endDate === '9999-12-31' ? 'Ongoing' : a.endDate}</td><td>{del('stallAssignments', a)}</td></tr>)} /><Table title="Resources" columns={['Resource', 'Category', 'Availability']} rows={data.resources.map((r) => <tr key={r._id}><td>{r.name}</td><td>{r.category || '—'}</td><td>{r.availability}</td></tr>)} /></div></div>;
+    ]} /></>}</div><div className="form-stack"><Table title="Stalls" columns={['Stall', 'Location', 'Availability', '']} rows={data.stalls.map((s) => { const occupied = isStallOccupied(s._id, data.stallAssignments, today); return <tr key={s._id}><td>{s.name}</td><td>{s.location || '—'}</td><td>{occupied ? 'Occupied' : s.status}</td><td>{del('stalls', s)}</td></tr>; })} /><Table title="Stall assignments" columns={['Stall', 'Horse', 'From', 'Until', '']} rows={data.stallAssignments.map((a) => <tr key={a._id}><td>{stallNames[a.stallId] || 'Stall'}</td><td>{horseNames[a.horseId] || 'Horse'}</td><td>{a.startDate}</td><td>{a.endDate === '9999-12-31' ? 'Ongoing' : a.endDate}</td><td>{del('stallAssignments', a)}</td></tr>)} /><Table title="Resources" columns={['Resource', 'Category', 'Availability']} rows={data.resources.map((r) => <tr key={r._id}><td>{r.name}</td><td>{r.category || '—'}</td><td>{r.availability}</td></tr>)} /></div></div>;
   } else {
     const dailyItems = auth.user.role === 'manager'
       ? buildStaffSchedule({ activities: data.activities, routines: data.routines, history: data.history, staffId: null, date: today })

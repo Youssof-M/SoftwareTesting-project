@@ -1,0 +1,28 @@
+$kind: http-request
+name: Create Horse
+method: POST
+url: '{{base_url}}/horses'
+order: 2000
+headers:
+  - key: Content-Type
+    value: application/json
+body:
+  type: json
+  content: |-
+    {
+      "name": "Thunder",
+      "horseId": "H001",
+      "breed": "Thoroughbred",
+      "owner": "John Doe",
+      "dietaryNotes": "Low sugar diet",
+      "medicalNotes": "None"
+    }
+scripts:
+  - type: afterResponse
+    language: text/javascript
+    code: |-
+      const res = pm.response.json();
+      if (res._id) {
+        pm.collectionVariables.set('horse_id', res._id);
+        console.log('✅ horse_id saved:', res._id);
+      }

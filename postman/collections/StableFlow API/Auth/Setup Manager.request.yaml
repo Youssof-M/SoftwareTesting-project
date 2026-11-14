@@ -1,0 +1,27 @@
+$kind: http-request
+name: Setup Manager
+method: POST
+url: '{{base_url}}/auth/setup'
+order: 2000
+auth:
+  type: noauth
+headers:
+  - key: Content-Type
+    value: application/json
+body:
+  type: json
+  content: |-
+    {
+      "name": "Admin Manager",
+      "email": "manager@example.com",
+      "password": "password123"
+    }
+scripts:
+  - type: afterResponse
+    language: text/javascript
+    code: |-
+      const res = pm.response.json();
+      if (res.token) {
+        pm.collectionVariables.set('auth_token', res.token);
+        console.log('✅ auth_token saved from setup');
+      }

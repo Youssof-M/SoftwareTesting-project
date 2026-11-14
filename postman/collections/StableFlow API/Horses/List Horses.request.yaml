@@ -1,0 +1,5 @@
+$kind: http-request
+name: List Horses
+method: GET
+url: '{{base_url}}/horses'
+order: 1000

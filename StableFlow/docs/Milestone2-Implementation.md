@@ -9,6 +9,7 @@
 - Staff and resource records, appointment completion, daily care completion, and horse service history.
 - Clear API validation and conflict messages, persistent records, and a responsive React interface.
 - Manager and staff accounts, hashed passwords, role-protected management routes, and assigned-work completion access.
+- Fictional, repeatable demo seed data with generated manager/staff credentials; reruns preserve edits and do not duplicate records.
 
 ## Architecture and code evidence
 
@@ -30,7 +31,7 @@ The repository pattern is visible in `server/repositories`; each repository expo
 - `npm install` completed with 0 reported vulnerabilities.
 - `npm run build` completed successfully.
 - Node syntax checks passed for the server entry point and all server layers.
-- `npm test` passes all four requirement checks. The API workflow covers manager setup, horse create/update/view, staff accounts, stalls and overlapping occupancy, care routines, appointments and overlap rejection, role permissions, service history, and persistence after an API restart.
+- `npm test` passes six checks. The API workflow covers manager setup, horse create/update/view, staff accounts, stalls and overlapping occupancy, care routines, appointments and overlap rejection, role permissions, service history, and persistence after an API restart. Separate checks cover client search/scheduling requirements and seed idempotence.
 - Client checks cover name/ID search and staff daily schedule behavior, including completed-care filtering and the 10-second response target.
 
 ## Milestone 2 handoff checklist
@@ -39,6 +40,7 @@ The repository pattern is visible in `server/repositories`; each repository expo
 - [x] Connected end-to-end care scenario works and is covered by `npm test`.
 - [x] Layered architecture is reflected in routes, controllers, services, repositories, and models.
 - [x] Declarative rendering and imperative validation/scheduling logic are both present and documented.
+- [x] `npm run seed` prepares a linked demonstration scenario without fixed passwords or duplicate records.
 - [ ] On the evaluator's laptop, run `npm install` and `npm run dev`, create the first manager account, and repeat the walkthrough.
 - [ ] If the team chooses MongoDB for the demo, configure `MONGODB_URI` and verify the MongoDB-backed run on that laptop. The automated API workflow uses isolated local file storage.
 - [ ] Submit the code and milestone notes through the course Google Form; keep `.env` secrets out of the submission.

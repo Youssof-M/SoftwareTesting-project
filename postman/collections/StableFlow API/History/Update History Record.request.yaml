@@ -1,0 +1,17 @@
+$kind: http-request
+name: Update History Record
+method: PUT
+url: '{{base_url}}/history/{{history_id}}'
+order: 3000
+pathVariables:
+  - key: id
+    value: '{{history_id}}'
+headers:
+  - key: Content-Type
+    value: application/json
+body:
+  type: json
+  content: |-
+    {
+      "notes": "Updated notes"
+    }

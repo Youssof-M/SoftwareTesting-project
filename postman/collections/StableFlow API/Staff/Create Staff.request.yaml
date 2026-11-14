@@ -1,0 +1,25 @@
+$kind: http-request
+name: Create Staff
+method: POST
+url: '{{base_url}}/staff'
+order: 2000
+headers:
+  - key: Content-Type
+    value: application/json
+body:
+  type: json
+  content: |-
+    {
+      "name": "Alex Johnson",
+      "role": "Stable hand",
+      "email": "alex@example.com"
+    }
+scripts:
+  - type: afterResponse
+    language: text/javascript
+    code: |-
+      const res = pm.response.json();
+      if (res._id) {
+        pm.collectionVariables.set('staff_id', res._id);
+        console.log('✅ staff_id saved:', res._id);
+      }

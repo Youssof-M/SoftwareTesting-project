@@ -1,0 +1,19 @@
+$kind: http-request
+name: Update Routine
+method: PUT
+url: '{{base_url}}/routines/{{routine_id}}'
+order: 3000
+pathVariables:
+  - key: id
+    value: '{{routine_id}}'
+headers:
+  - key: Content-Type
+    value: application/json
+body:
+  type: json
+  content: |-
+    {
+      "time": "08:00",
+      "frequency": "Daily",
+      "active": true
+    }

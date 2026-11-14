@@ -1,0 +1,17 @@
+$kind: http-request
+name: Create Staff Account
+method: POST
+url: '{{base_url}}/auth/users'
+order: 5000
+headers:
+  - key: Content-Type
+    value: application/json
+body:
+  type: json
+  content: |-
+    {
+      "name": "Staff Member",
+      "email": "staff@example.com",
+      "password": "password123",
+      "staffId": "{{staff_id}}"
+    }

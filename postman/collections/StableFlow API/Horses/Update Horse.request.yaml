@@ -1,0 +1,21 @@
+$kind: http-request
+name: Update Horse
+method: PUT
+url: '{{base_url}}/horses/{{horse_id}}'
+order: 3000
+pathVariables:
+  - key: id
+    value: '{{horse_id}}'
+headers:
+  - key: Content-Type
+    value: application/json
+body:
+  type: json
+  content: |-
+    {
+      "name": "Thunder",
+      "breed": "Thoroughbred",
+      "owner": "John Doe",
+      "dietaryNotes": "Updated notes",
+      "medicalNotes": "None"
+    }

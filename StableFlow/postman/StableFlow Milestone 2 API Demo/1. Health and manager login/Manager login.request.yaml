@@ -1,0 +1,21 @@
+$kind: http-request
+url: "http://localhost:5000/api/auth/login"
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: text
+  content: |-
+    {
+      "email": "manager@stableflow.demo",
+      "password": "{{managerPassword}}"
+    }
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test('Manager can sign in', () => pm.response.to.have.status(200));
+      const body = pm.response.json();
+      pm.environment.set('managerToken', body.token);
+      pm.test('Manager role is returned', () => pm.expect(body.user.role).to.eql('manager'));
+    language: text/javascript
+order: 2000

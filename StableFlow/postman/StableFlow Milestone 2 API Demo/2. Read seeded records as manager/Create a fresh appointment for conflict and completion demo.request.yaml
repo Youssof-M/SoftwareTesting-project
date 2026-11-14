@@ -1,0 +1,25 @@
+$kind: http-request
+url: "{{baseUrl}}/activities"
+method: POST
+headers:
+  Authorization: Bearer {{managerToken}}
+  Content-Type: application/json
+body:
+  type: text
+  content: |-
+    {
+      "horseId": "{{secondHorseId}}",
+      "type": "Veterinary",
+      "date": "{{demoDate}}",
+      "time": "16:00",
+      "durationMinutes": 60,
+      "facility": "Postman Clinic {{runId}}",
+      "status": "scheduled"
+    }
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test('Fresh veterinary appointment is created', () => pm.response.to.have.status(201));
+      pm.environment.set('activityId', pm.response.json()._id);
+    language: text/javascript
+order: 6000

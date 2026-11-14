@@ -1,0 +1,5 @@
+$kind: http-request
+name: List Stalls
+method: GET
+url: '{{base_url}}/stalls'
+order: 1000

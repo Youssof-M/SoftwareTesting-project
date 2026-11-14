@@ -1,0 +1,11 @@
+$kind: http-request
+name: Get Staff Daily Schedule
+method: GET
+url: '{{base_url}}/staff/{{staff_id}}/schedule?date=2026-11-12'
+order: 5000
+pathVariables:
+  - key: id
+    value: '{{staff_id}}'
+queryParams:
+  - key: date
+    value: '2026-11-12'

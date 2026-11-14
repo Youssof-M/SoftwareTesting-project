@@ -1,0 +1,17 @@
+$kind: http-request
+name: Complete Care Routine
+method: POST
+url: '{{base_url}}/routines/{{routine_id}}/complete'
+order: 5000
+pathVariables:
+  - key: id
+    value: '{{routine_id}}'
+headers:
+  - key: Content-Type
+    value: application/json
+body:
+  type: json
+  content: |-
+    {
+      "date": "2026-11-12"
+    }

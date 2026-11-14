@@ -1,0 +1,5 @@
+$kind: http-request
+name: List Routines
+method: GET
+url: '{{base_url}}/routines'
+order: 1000

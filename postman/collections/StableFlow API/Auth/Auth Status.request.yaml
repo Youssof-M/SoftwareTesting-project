@@ -1,0 +1,7 @@
+$kind: http-request
+name: Auth Status
+method: GET
+url: '{{base_url}}/auth/status'
+order: 1000
+auth:
+  type: noauth

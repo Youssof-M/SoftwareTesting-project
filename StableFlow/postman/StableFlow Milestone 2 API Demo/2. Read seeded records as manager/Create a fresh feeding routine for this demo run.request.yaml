@@ -1,0 +1,24 @@
+$kind: http-request
+url: "{{baseUrl}}/routines"
+method: POST
+headers:
+  Authorization: Bearer {{managerToken}}
+  Content-Type: application/json
+body:
+  type: text
+  content: |-
+    {
+      "horseId": "{{secondHorseId}}",
+      "type": "Feeding",
+      "time": "09:00",
+      "frequency": "Daily",
+      "staffId": "{{staffId}}",
+      "active": true
+    }
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test('Fresh feeding routine is created', () => pm.response.to.have.status(201));
+      pm.environment.set('routineId', pm.response.json()._id);
+    language: text/javascript
+order: 5000

@@ -1,0 +1,12 @@
+$kind: http-request
+url: "{{baseUrl}}/staff/{{staffId}}/schedule?date={{demoDate}}"
+method: GET
+headers:
+  Authorization: Bearer {{staffToken}}
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test('Staff schedule loads', () => pm.response.to.have.status(200));
+      pm.test('Schedule includes seeded feeding', () => pm.expect(pm.response.json().some((item) => item._id === pm.environment.get('routineId'))).to.be.true);
+    language: text/javascript
+order: 2000

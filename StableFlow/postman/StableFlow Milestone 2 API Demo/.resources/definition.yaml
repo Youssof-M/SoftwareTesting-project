@@ -1,0 +1,18 @@
+$kind: collection
+description: Manager and staff API walkthrough for the StableFlow Milestone 2 beta. Import the companion environment and enter the local demo credentials printed by npm run seed.
+variables:
+  baseUrl: http://localhost:5000/api
+  demoDate: ""
+  managerEmail: ""
+  managerPassword: ""
+  staffEmail: ""
+  staffPassword: ""
+  managerToken: ""
+  staffToken: ""
+  horseId: ""
+  secondHorseId: ""
+  staffId: ""
+  stallId: ""
+  routineId: ""
+  activityId: ""
+  runId: ""

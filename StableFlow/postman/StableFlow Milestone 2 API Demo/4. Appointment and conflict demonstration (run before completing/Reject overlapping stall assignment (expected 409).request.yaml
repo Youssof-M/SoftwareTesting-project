@@ -1,0 +1,19 @@
+$kind: http-request
+url: "{{baseUrl}}/stallAssignments"
+method: POST
+headers:
+  Authorization: Bearer {{managerToken}}
+  Content-Type: application/json
+body:
+  type: text
+  content: |-
+    {
+      "stallId": "{{stallId}}",
+      "horseId": "{{secondHorseId}}",
+      "startDate": "{{demoDate}}"
+    }
+scripts:
+  - type: afterResponse
+    code: pm.test('Overlapping stall occupancy is rejected', () => pm.response.to.have.status(409));
+    language: text/javascript
+order: 1000

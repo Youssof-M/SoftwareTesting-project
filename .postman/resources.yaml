@@ -1,0 +1,10 @@
+# Use this workspace to collaborate
+workspace:
+  id: 4d8f4e28-3cf9-455f-8d4d-f8b97e6c6409
+
+localResources:
+  collections:
+    - ../StableFlow/postman/StableFlow.postman_collection.json
+    - ../StableFlow/postman/StableFlow Milestone 2 API Demo
+  environments:
+    - ../StableFlow/postman/StableFlow Local Demo.environment.yaml

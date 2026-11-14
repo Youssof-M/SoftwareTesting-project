@@ -2,12 +2,19 @@
   "name": "stableflow",
   "private": true,
   "description": "Horse and stable operations management system",
-  "workspaces": ["client", "server"],
+  "workspaces": [
+    "client",
+    "server"
+  ],
   "scripts": {
     "dev": "concurrently \"npm run dev --workspace server\" \"npm run dev --workspace client\"",
     "build": "npm run build --workspace client",
-    "test": "node --test",
+    "test": "node --experimental-vm-modules ./node_modules/jest/bin/jest.js --runInBand",
+    "seed": "npm run seed --workspace server",
     "start": "npm run start --workspace server"
   },
-  "devDependencies": { "concurrently": "^9.2.1" }
+  "devDependencies": {
+    "concurrently": "^9.2.1",
+    "jest": "^30.5.2"
+  }
 }

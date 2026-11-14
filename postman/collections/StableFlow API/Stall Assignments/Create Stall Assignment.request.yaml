@@ -1,0 +1,26 @@
+$kind: http-request
+name: Create Stall Assignment
+method: POST
+url: '{{base_url}}/stallAssignments'
+order: 2000
+headers:
+  - key: Content-Type
+    value: application/json
+body:
+  type: json
+  content: |-
+    {
+      "stallId": "{{stall_id}}",
+      "horseId": "{{horse_id}}",
+      "startDate": "2026-11-01",
+      "endDate": "2026-12-31"
+    }
+scripts:
+  - type: afterResponse
+    language: text/javascript
+    code: |-
+      const res = pm.response.json();
+      if (res._id) {
+        pm.collectionVariables.set('assignment_id', res._id);
+        console.log('✅ assignment_id saved:', res._id);
+      }

@@ -1,8 +1,7 @@
-import test from 'node:test';
-import assert from 'node:assert/strict';
 import { spawn } from 'node:child_process';
 import { createServer } from 'node:net';
 import { mkdtemp, rm } from 'node:fs/promises';
+import assert from 'node:assert/strict';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 
@@ -57,15 +56,16 @@ function apiClient(base, token = '') {
   };
 }
 
-test('Milestone 2 connected beta workflow, validation, permissions, and persistence', async (t) => {
+test('Milestone 2 connected beta workflow, validation, permissions, and persistence', async () => {
   const dataDirectory = await mkdtemp(join(tmpdir(), 'stableflow-m2-'));
-  t.after(async () => rm(dataDirectory, { recursive: true, force: true }));
+  let child;
+  try {
   const port = await freePort();
   let api = await startApi(port, dataDirectory);
-  t.after(async () => stopApi(api.child));
+  child = api.child;
   let request = apiClient(api.base);
 
-  assert.equal((await request('/health')).body.status, 'ok');
+  expect((await request('/health')).body.status).toBe('ok');
   assert.equal((await request('/horses')).status, 401, 'records require sign-in');
   const setup = await request('/auth/setup', { method: 'POST', body: { name: 'Stable Manager', email: 'manager@test.local', password: 'ManagerPass!2026' } });
   assert.equal(setup.status, 201);
@@ -116,9 +116,14 @@ test('Milestone 2 connected beta workflow, validation, permissions, and persiste
 
   await stopApi(api.child);
   api = await startApi(port, dataDirectory);
+  child = api.child;
   request = apiClient(api.base, setup.body.token);
   const persistedHorses = await request('/horses');
   assert.equal(persistedHorses.status, 200);
   assert.ok(persistedHorses.body.some((entry) => entry._id === horse._id), 'records survive an API restart');
   assert.equal((await request('/history')).body.length, 2);
+  } finally {
+    if (child) await stopApi(child);
+    await rm(dataDirectory, { recursive: true, force: true });
+  }
 });

@@ -1,0 +1,13 @@
+$kind: http-request
+url: "{{baseUrl}}/staff"
+method: GET
+headers:
+  Authorization: Bearer {{managerToken}}
+scripts:
+  - type: afterResponse
+    code: |-
+      const staff = pm.response.json().find((item) => item.email === pm.environment.get('staffEmail'));
+      pm.test('Seeded staff profile exists', () => pm.expect(staff).to.exist);
+      if (staff) pm.environment.set('staffId', staff._id);
+    language: text/javascript
+order: 2000

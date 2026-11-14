@@ -1,0 +1,30 @@
+$kind: http-request
+name: Create Activity
+method: POST
+url: '{{base_url}}/activities'
+order: 2000
+headers:
+  - key: Content-Type
+    value: application/json
+body:
+  type: json
+  content: |-
+    {
+      "horseId": "{{horse_id}}",
+      "type": "Training",
+      "date": "2026-11-12",
+      "time": "10:00",
+      "durationMinutes": 60,
+      "staffId": "{{staff_id}}",
+      "facility": "Arena 1",
+      "status": "scheduled"
+    }
+scripts:
+  - type: afterResponse
+    language: text/javascript
+    code: |-
+      const res = pm.response.json();
+      if (res._id) {
+        pm.collectionVariables.set('activity_id', res._id);
+        console.log('✅ activity_id saved:', res._id);
+      }

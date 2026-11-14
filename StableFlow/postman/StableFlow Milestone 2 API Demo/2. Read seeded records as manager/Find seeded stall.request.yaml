@@ -1,0 +1,13 @@
+$kind: http-request
+url: "{{baseUrl}}/stalls"
+method: GET
+headers:
+  Authorization: Bearer {{managerToken}}
+scripts:
+  - type: afterResponse
+    code: |-
+      const stall = pm.response.json().find((item) => item.name === 'North Wing 01');
+      pm.test('Seeded stall exists', () => pm.expect(stall).to.exist);
+      if (stall) pm.environment.set('stallId', stall._id);
+    language: text/javascript
+order: 3000

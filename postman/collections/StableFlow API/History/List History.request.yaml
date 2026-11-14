@@ -1,0 +1,5 @@
+$kind: http-request
+name: List History
+method: GET
+url: '{{base_url}}/history'
+order: 1000

@@ -1,0 +1,29 @@
+$kind: http-request
+name: Create History Record
+method: POST
+url: '{{base_url}}/history'
+order: 2000
+headers:
+  - key: Content-Type
+    value: application/json
+body:
+  type: json
+  content: |-
+    {
+      "horseId": "{{horse_id}}",
+      "staffId": "{{staff_id}}",
+      "type": "Feeding",
+      "date": "2026-11-12",
+      "notes": "Fed on time",
+      "activityId": "{{activity_id}}",
+      "routineId": "{{routine_id}}"
+    }
+scripts:
+  - type: afterResponse
+    language: text/javascript
+    code: |-
+      const res = pm.response.json();
+      if (res._id) {
+        pm.collectionVariables.set('history_id', res._id);
+        console.log('✅ history_id saved:', res._id);
+      }

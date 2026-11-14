@@ -1,0 +1,20 @@
+$kind: http-request
+url: "{{baseUrl}}/horses"
+method: POST
+headers:
+  Authorization: Bearer {{managerToken}}
+  Content-Type: application/json
+body:
+  type: text
+  content: |-
+    {
+      "name": "Postman Demo Horse {{runId}}",
+      "horseId": "POSTMAN-{{runId}}"
+    }
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test('Unique demo horse is created', () => pm.response.to.have.status(201));
+      pm.environment.set('secondHorseId', pm.response.json()._id);
+    language: text/javascript
+order: 4000

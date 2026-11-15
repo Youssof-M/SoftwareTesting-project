@@ -18,9 +18,16 @@ For protected endpoints, use **Authorization → Bearer Token** with `{{managerT
 
 | Action | Method and URL | Expected result |
 |---|---|---|
+
 | Health check | `GET http://localhost:5000/api/health` | `200`, status is `ok` |
+
+
 | Manager sign-in | `POST http://localhost:5000/api/auth/login` | `200`, role is `manager` |
+
+
 | Staff sign-in | `POST http://localhost:5000/api/auth/login` | `200`, role is `staff` |
+
+
 | Staff tries a manager-only change | `POST http://localhost:5000/api/horses` with staff Bearer token | `403` |
 
 
@@ -30,6 +37,14 @@ Manager login request body (copied from the screenshot):
 {
   "email": "manager@stableflow.demo",
   "password": "{{managerPassword}}"
+}
+```
+
+After manager sign-in, use the returned token as a Bearer Token. To create a horse with `POST http://localhost:5000/api/horses`, use this request body:
+
+```json
+{
+  "name": "Postman Demo Horse"
 }
 ```
 
@@ -49,16 +64,37 @@ Staff login uses the same URL with this body. Use the staff password printed by 
 | Action | Method and URL | Expected result |
 |---|---|---|
 | List horses (manager Bearer Token required) | `GET http://localhost:5000/api/horses` | `200`, horse list returned |
-| Create horse | `POST http://localhost:5000/api/horses` | `201`, new horse returned; save `_id` as `horseId` |
+
+
+| Create horse | `POST http://localhost:5000/api/horses` | `201`, new horse returned; save `_id` as `horseId` | 
+name req put this in body 
+
+{
+  "name": "Postman Demo Horse"
+}
+
+
 | Update horse | `PUT http://localhost:5000/api/horses/{{horseId}}` | `200`, changed fields returned |
+
+
 | List staff | `GET http://localhost:5000/api/staff` | `200`, staff list returned |
-| Create staff profile | `POST http://localhost:5000/api/staff` | `201`, new staff profile returned |
+
+
+| Create staff profile | `POST http://localhost:5000/api/staff` | `201`, new staff profile returned | 
+
+name req put this in body 
+{
+  "name": "Postman Demo Horse"
+}
+
 
 Create horse body:
 
 ```json
 {
-  "name": "Postman Demo Horse"
+  "name": "Clover",
+  "horseId": "SF-17",
+  "dietaryNotes": "Hay twice daily"
 }
 ```
 
@@ -86,9 +122,27 @@ Use the manager token for these requests.
 
 | Action | Method and URL | Expected result |
 |---|---|---|
+
 | List stalls | `GET http://localhost:5000/api/stalls` | `200`, stall list returned |
-| Create stall | `POST http://localhost:5000/api/stalls` | `201`, save its `_id` as `stallId` |
+
+
+| Create stall | `POST http://localhost:5000/api/stalls` | `201`, save its `_id` as `stallId` | 
+
+name req
+{
+  "name": "Postman Demo Horse"
+}
+
 | Assign horse | `POST http://localhost:5000/api/stallAssignments` | `201` |
+  this is req in the body 
+
+  {
+  "stallId": "paste-stall-_id-here",
+  "horseId": "paste-horse-_id-here",
+  "startDate": "2026-11-14"
+}
+
+
 | Assign a second horse to the same occupied stall/date range | `POST http://localhost:5000/api/stallAssignments` | `409`, overlap rejected |
 
 Create stall body:
@@ -115,9 +169,30 @@ For the conflict request, use the same `stallId` and date, but a different horse
 
 | Action | Method and URL | Expected result |
 |---|---|---|
-| Create feeding routine | `POST http://localhost:5000/api/routines` | `201`, save `_id` as `routineId` |
+
+| Create feeding routine | `POST http://localhost:5000/api/routines` | `201`, save `_id` as `routineId` | 
+this needed in body 
+{
+  "horseId": "{{horseId}}",
+  "type": "Feeding",
+  "time": "08:00",
+  "frequency": "Daily",
+  "staffId": "{{staffId}}",
+  "active": true
+}
+
+
 | View assigned schedule | `GET http://localhost:5000/api/staff/{{staffId}}/schedule?date={{demoDate}}` | `200`, schedule includes the routine |
-| Complete routine | `POST http://localhost:5000/api/routines/{{routineId}}/complete` | `200` |
+
+date format YYYY-MM-DD
+
+| Complete routine | `POST http://localhost:5000/api/routines/{{routineId}}/complete` | `200` | 
+
+req in body  
+
+{ "date": "{{demoDate}}" }
+
+
 | Verify service history | `GET http://localhost:5000/api/history` | `200`, completion appears in history |
 
 Create routine body:
@@ -147,9 +222,25 @@ Use the manager token to create the routine and verify history. Use the staff to
 
 | Action | Method and URL | Expected result |
 |---|---|---|
+
 | Create appointment | `POST http://localhost:5000/api/activities` | `201`, save `_id` as `activityId` |
+
+req in body 
+{
+  "horseId": "{{horseId}}",
+  "type": "Veterinary",
+  "date": "{{demoDate}}",
+  "time": "10:00",
+  "staffId": "{{staffId}}",
+  "facility": "Clinic"
+}
+
 | Try overlapping booking | `POST http://localhost:5000/api/activities` | `409`, conflict rejected |
+
+
 | Complete appointment | `POST http://localhost:5000/api/activities/{{activityId}}/complete` | `200`, status is `completed` |
+
+
 | Verify service history | `GET http://localhost:5000/api/history` | `200`, completed appointment appears |
 
 Create appointment body:

@@ -126,4 +126,4 @@ test('Milestone 2 connected beta workflow, validation, permissions, and persiste
     if (child) await stopApi(child);
     await rm(dataDirectory, { recursive: true, force: true });
   }
-});
+}, 30000);

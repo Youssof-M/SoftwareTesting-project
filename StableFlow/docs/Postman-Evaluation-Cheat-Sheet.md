@@ -23,6 +23,7 @@ For protected endpoints, use **Authorization → Bearer Token** with `{{managerT
 | Staff sign-in | `POST http://localhost:5000/api/auth/login` | `200`, role is `staff` |
 | Staff tries a manager-only change | `POST http://localhost:5000/api/horses` with staff Bearer token | `403` |
 
+
 Manager login request body (copied from the screenshot):
 
 ```json
@@ -47,7 +48,7 @@ Staff login uses the same URL with this body. Use the staff password printed by 
 
 | Action | Method and URL | Expected result |
 |---|---|---|
-| List horses | `GET http://localhost:5000/api/horses` | `200`, horse list returned |
+| List horses (manager Bearer Token required) | `GET http://localhost:5000/api/horses` | `200`, horse list returned |
 | Create horse | `POST http://localhost:5000/api/horses` | `201`, new horse returned; save `_id` as `horseId` |
 | Update horse | `PUT http://localhost:5000/api/horses/{{horseId}}` | `200`, changed fields returned |
 | List staff | `GET http://localhost:5000/api/staff` | `200`, staff list returned |
@@ -57,9 +58,7 @@ Create horse body:
 
 ```json
 {
-  "name": "Clover",
-  "horseId": "SF-17",
-  "dietaryNotes": "Hay twice daily"
+  "name": "Postman Demo Horse"
 }
 ```
 
